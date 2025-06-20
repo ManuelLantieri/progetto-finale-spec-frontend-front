@@ -1,13 +1,24 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import React from "react";
+import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App.tsx";
+import App from "./App";
+import { FavoritesProvider } from "./contexts/FavoritesContext";
+import { ComparatorProvider } from "./contexts/ComparatorContext";
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
+const container = document.getElementById("root");
+
+if (!container) {
+  throw new Error("Elemento root non trovato");
+}
+
+const root = ReactDOM.createRoot(container as HTMLElement);
+
+root.render(
+  <React.StrictMode>
+    <FavoritesProvider>
+      <ComparatorProvider>
+        <App />
+      </ComparatorProvider>
+    </FavoritesProvider>
+  </React.StrictMode>
 );

@@ -1,23 +1,22 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Layout from "./layout/Layout";
-import HomePage from "./pages/HomePage";
-import CompareCategoryPage from "./pages/CompareCategoryPage";
-import DetailPage from "./pages/DetailPage";
-import NotFoundPage from "./pages/NotFoundPage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import PhoneList from "./components/PhoneList";
+import PhoneDetail from "./components/PhoneDetail";
+import Favorites from "./components/Favorites";
+import Comparator from "./components/Comparator";
 
-function App() {
+export default function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route path="/compare/:category" element={<CompareCategoryPage />} />
-          <Route path="/smartphone/:id" element={<DetailPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-      </Routes>
-    </Router>
+    <BrowserRouter>
+      <Header />
+      <main className="pt-5 bg-light min-vh-100">
+        <Routes>
+          <Route path="/" element={<PhoneList />} />
+          <Route path="/phones/:id" element={<PhoneDetail />} />
+          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/compare" element={<Comparator />} />
+        </Routes>
+      </main>
+    </BrowserRouter>
   );
 }
-
-export default App;
