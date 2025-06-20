@@ -8,7 +8,7 @@ const PhoneList: React.FC = () => {
   const [phones, setPhones] = useState<Phone[]>([]);
 
   useEffect(() => {
-    fetch("/data/smartphones.json")
+    fetch("/data/smartphone.json")
       .then((res) => res.json())
       .then((data) => setPhones(data))
       .catch((err) => console.error("Errore nel caricamento dei dati:", err));
