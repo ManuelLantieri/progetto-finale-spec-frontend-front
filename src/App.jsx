@@ -9,7 +9,10 @@ export default function App() {
   return (
     <BrowserRouter>
       <Header />
-      <main className="pt-5 bg-light min-vh-100">
+      <main
+        className="pt-5 bg-white min-vh-100"
+        style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
+      >
         <Routes>
           <Route path="/" element={<PhoneList />} />
           <Route path="/phones/:id" element={<PhoneDetail />} />
@@ -17,6 +20,7 @@ export default function App() {
           <Route path="/compare" element={<Comparator />} />
         </Routes>
       </main>
+      <Footer />
     </BrowserRouter>
   );
 }

@@ -1,0 +1,15 @@
+body {
+  background-color: #f4f4f0;
+  color: #1a1a1a;
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+.btn-primary {
+  background-color: #262626;
+  border-color: #262626;
+}
+
+.btn-primary:hover {
+  background-color: #000;
+  border-color: #000;
+}

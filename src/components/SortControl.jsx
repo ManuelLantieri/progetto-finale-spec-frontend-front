@@ -1,16 +1,4 @@
-import React from "react";
-
-type SortControlProps = {
-  sortBy: string;
-  order: "asc" | "desc";
-  onSortChange: (sortBy: string, order: "asc" | "desc") => void;
-};
-
-export default function SortControl({
-  sortBy,
-  order,
-  onSortChange,
-}: SortControlProps) {
+export default function SortControl({ sortBy, order, onSortChange }) {
   return (
     <div className="mb-3 d-flex gap-2">
       <select
@@ -25,7 +13,7 @@ export default function SortControl({
 
       <select
         value={order}
-        onChange={(e) => onSortChange(sortBy, e.target.value as "asc" | "desc")}
+        onChange={(e) => onSortChange(sortBy, e.target.value)}
         className="form-select"
       >
         <option value="asc">A-Z</option>
