@@ -12,7 +12,7 @@ export default function PhoneItem({ phone }) {
   return (
     <div className="card h-100 shadow-sm border-0">
       <img
-        src={phone.imageUrl}
+        src={`/img/${phone.imageUrl}`}
         alt={phone.title}
         className="card-img-top img-fluid"
         style={{ objectFit: "cover", maxHeight: "180px" }}

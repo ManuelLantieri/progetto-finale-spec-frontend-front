@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useComparator } from "../contexts/ComparatorContext";
-import { fetchPhoneById } from "../api";
 
 const LABELS_IT = {
   title: "Modello",
@@ -14,21 +13,18 @@ const LABELS_IT = {
 };
 
 export default function Comparator() {
-  const { compareList: compareIds, clearCompare } = useComparator();
+  const { compareList, clearCompare } = useComparator();
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    if (compareIds.length < 2) {
+    if (compareList.length < 2) {
       setItems([]);
-      return;
+    } else {
+      setItems(compareList.slice(0, 4)); // massimo 4 colonne
     }
+  }, [compareList]);
 
-    Promise.all(compareIds.map((p) => fetchPhoneById(p.id)))
-      .then(setItems)
-      .catch((err) => console.error(err));
-  }, [compareIds]);
-
-  if (compareIds.length < 2) {
+  if (compareList.length < 2) {
     return (
       <div className="container my-5 text-center text-muted">
         <p className="fs-5">Seleziona almeno 2 telefoni per confrontarli.</p>
@@ -36,8 +32,7 @@ export default function Comparator() {
     );
   }
 
-  const list = items.slice(0, 4); // max 4 colonne
-  const keys = Object.keys(list[0] ?? {}).filter(
+  const keys = Object.keys(items[0] ?? {}).filter(
     (k) => !["id", "createdAt", "updatedAt", "imageUrl"].includes(k)
   );
 
@@ -55,7 +50,7 @@ export default function Comparator() {
           <thead className="table-light">
             <tr>
               <th></th>
-              {list.map((p) => (
+              {items.map((p) => (
                 <th key={`hdr-${p.id}`}>
                   <img
                     src={p.imageUrl}
@@ -71,7 +66,7 @@ export default function Comparator() {
             {keys.map((key) => (
               <tr key={key}>
                 <th className="text-start">{LABELS_IT[key] || key}</th>
-                {list.map((p) => (
+                {items.map((p) => (
                   <td key={`${p.id}-${key}`}>
                     {key === "price"
                       ? `€${(p.price ?? 0).toFixed(2)}`

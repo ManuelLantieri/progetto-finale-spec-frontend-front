@@ -16,15 +16,17 @@ export default function PhoneList() {
   useEffect(() => {
     fetchPhones({ search, category, sortBy, order })
       .then((data) => {
+        console.log("📱 Telefoni caricati:", data);
         setPhones(data);
-        if (data.length) {
-          const unique = [...new Set(data.map((p) => p.category))];
-          setCats(unique);
-        }
+        const uniqueCategories = [
+          ...new Set(data.map((p) => p.category).filter(Boolean)),
+        ];
+        setCats(uniqueCategories);
       })
       .catch((err) => {
-        console.error(err);
+        console.error("Errore durante la fetch dei telefoni:", err);
         setPhones([]);
+        setCats([]);
       });
   }, [search, category, sortBy, order]);
 
@@ -59,13 +61,11 @@ export default function PhoneList() {
         </p>
       ) : (
         <div className="row g-4">
-          {phones
-            .filter((p) => p.id != null)
-            .map((p) => (
-              <div key={p.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
-                <PhoneItem phone={p} />
-              </div>
-            ))}
+          {phones.map((p) => (
+            <div key={p.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+              <PhoneItem phone={p} />
+            </div>
+          ))}
         </div>
       )}
     </div>

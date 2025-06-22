@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import PhoneList from "./components/PhoneList";
 import PhoneDetail from "./components/PhoneDetail";
 import Favorites from "./components/Favorites";

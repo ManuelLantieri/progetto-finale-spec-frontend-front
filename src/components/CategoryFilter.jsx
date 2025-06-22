@@ -1,4 +1,6 @@
-export default function CategoryFilter({ categories, value, onChange }) {
+export default function CategoryFilter({ categories = [], value, onChange }) {
+  const uniqueCategories = [...new Set(categories.filter(Boolean))];
+
   return (
     <div className="mb-3">
       <select
@@ -7,7 +9,7 @@ export default function CategoryFilter({ categories, value, onChange }) {
         className="form-select"
       >
         <option value="">Tutte le categorie</option>
-        {categories.map((cat) => (
+        {uniqueCategories.map((cat) => (
           <option key={cat} value={cat}>
             {cat}
           </option>
