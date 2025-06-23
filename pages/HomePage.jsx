@@ -21,12 +21,10 @@ export default function HomePage() {
       try {
         const results = await fetchPhones({ search: query });
 
-        // 🔐 Escludi telefoni già selezionati
         const filtered = results.filter(
           (phone) => !selectedPhones.some((p) => p.id === phone.id)
         );
 
-        // 🔤 Ordina per rilevanza
         const sorted = filtered.sort((a, b) => {
           const q = query.toLowerCase();
           const aTitle = a.title.toLowerCase();
@@ -140,6 +138,20 @@ export default function HomePage() {
           </>
         )}
       </div>
+
+      {selectedPhones.length >= 2 && (
+        <div className="mt-4 d-flex justify-content-center">
+          <button
+            className="btn btn-primary btn-lg px-5"
+            onClick={() => {
+              const ids = selectedPhones.map((p) => p.id).join(",");
+              window.location.href = `/compare?ids=${ids}`;
+            }}
+          >
+            Confronta {selectedPhones.length} dispositivi
+          </button>
+        </div>
+      )}
     </section>
   );
 }
