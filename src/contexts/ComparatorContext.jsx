@@ -11,8 +11,8 @@ export function ComparatorProvider({ children }) {
       if (exists) {
         return current.filter((el) => el.id !== item.id);
       }
-      if (current.length >= 2) {
-        return current; // limite: massimo 2 elementi
+      if (current.length >= 3) {
+        return current;
       }
       return [...current, item];
     });

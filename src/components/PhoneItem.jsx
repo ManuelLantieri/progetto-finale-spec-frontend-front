@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import { useFavorites } from "../contexts/FavoritesContext";
 import { useComparator } from "../contexts/ComparatorContext";
 
-export default function PhoneItem({ phone }) {
+export default function PhoneItem({ phone, onCompare }) {
   const { favorites, addFav, removeFav } = useFavorites();
-  const { compareList, toggleCompare } = useComparator();
+  const { compareList } = useComparator();
 
   const isFav = favorites.some((f) => f.id === phone.id);
   const inCompare = compareList.some((c) => c.id === phone.id);
@@ -12,7 +12,7 @@ export default function PhoneItem({ phone }) {
   return (
     <div className="card h-100 shadow-sm border-0">
       <img
-        src={`/img/${phone.imageUrl}`}
+        src={phone.imageUrl}
         alt={phone.title}
         className="card-img-top img-fluid"
         style={{ objectFit: "cover", maxHeight: "180px" }}
@@ -38,8 +38,7 @@ export default function PhoneItem({ phone }) {
           </button>
 
           <button
-            onClick={() => toggleCompare(phone)}
-            disabled={!inCompare && compareList.length >= 4}
+            onClick={() => onCompare?.(phone)}
             className="btn btn-sm btn-outline-secondary"
             aria-label="Toggle Confronto"
           >

@@ -20,7 +20,12 @@ export default function Comparator() {
     if (compareList.length < 2) {
       setItems([]);
     } else {
-      setItems(compareList.slice(0, 4)); // massimo 4 colonne
+      const selected = compareList.slice(0, 3);
+      console.log(
+        "📦 Telefoni selezionati:",
+        selected.map((p) => p.imageUrl)
+      );
+      setItems(selected);
     }
   }, [compareList]);
 
@@ -45,38 +50,45 @@ export default function Comparator() {
         </button>
       </div>
 
-      <div className="table-responsive">
-        <table className="table table-bordered align-middle text-center">
-          <thead className="table-light">
-            <tr>
-              <th></th>
-              {items.map((p) => (
-                <th key={`hdr-${p.id}`}>
-                  <img
-                    src={p.imageUrl}
-                    alt={p.title}
-                    className="img-fluid rounded mb-2"
-                    style={{ maxHeight: "100px" }}
-                  />
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {keys.map((key) => (
-              <tr key={key}>
-                <th className="text-start">{LABELS_IT[key] || key}</th>
-                {items.map((p) => (
-                  <td key={`${p.id}-${key}`}>
-                    {key === "price"
-                      ? `€${(p.price ?? 0).toFixed(2)}`
-                      : p[key] ?? "—"}
-                  </td>
+      <div className="row gx-4 gy-5">
+        <div className="col-12 col-md-3 fw-semibold">
+          <div className="mb-5 d-none d-md-block" />
+          {keys.map((key) => (
+            <div key={key} className="mb-4 text-secondary">
+              {LABELS_IT[key] || key}
+            </div>
+          ))}
+        </div>
+
+        {items.map((phone) => {
+          console.log("🖼️ Comparator image:", phone.imageUrl);
+
+          return (
+            <div key={phone.id} className="col-6 col-md">
+              <div className="text-center mb-4">
+                <img
+                  src={phone.imageUrl}
+                  alt={phone.title}
+                  className="img-fluid mb-3"
+                  style={{ maxHeight: "180px", objectFit: "contain" }}
+                />
+                <h5 className="fw-bold">{phone.title}</h5>
+                <p className="text-primary">
+                  {typeof phone.price === "number"
+                    ? `€ ${phone.price.toFixed(2)}`
+                    : "—"}
+                </p>
+              </div>
+              <div>
+                {keys.map((key) => (
+                  <div key={key} className="mb-4 text-center">
+                    {phone[key] ?? "—"}
+                  </div>
                 ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
