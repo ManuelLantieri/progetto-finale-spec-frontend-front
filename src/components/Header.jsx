@@ -1,57 +1,34 @@
 import { NavLink } from "react-router-dom";
-import { useFavorites } from "../contexts/FavoritesContext";
-import { useComparator } from "../contexts/ComparatorContext";
-import SearchFilter from "./SearchFilter";
-import { useState } from "react";
 
 export default function Header() {
-  const { favorites } = useFavorites();
-  const { compareList } = useComparator();
-  const [search, setSearch] = useState("");
-
   return (
-    <header className="bg-primary py-3 shadow-sm">
-      <div className="container-fluid d-flex align-items-center justify-content-between gap-3 flex-wrap">
-        <NavLink to="/" className="navbar-brand fw-bold fs-4 text-light m-0">
+    <header
+      className="py-3 px-4 position-absolute top-0 start-0 end-0"
+      style={{
+        background: "transparent",
+        zIndex: 20,
+      }}
+    >
+      <div className="d-flex justify-content-between align-items-center flex-wrap">
+        <NavLink to="/" className="navbar-brand fw-bold fs-3 text-white m-0">
           Boolphones
         </NavLink>
 
-        <div
-          className="flex-grow-1 d-flex justify-content-center"
-          style={{ minWidth: "150px" }}
-        >
-          <div style={{ width: "100%", maxWidth: "500px" }}>
-            <SearchFilter value={search} onChange={setSearch} />
-          </div>
-        </div>
-
-        <nav className="d-flex gap-3">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              "nav-link px-2" +
-              (isActive ? " active fw-semibold text-light" : " text-light")
-            }
-          >
-            Home
-          </NavLink>
+        <nav className="d-flex gap-4">
           <NavLink
             to="/favorites"
-            className={({ isActive }) =>
-              "nav-link px-2" +
-              (isActive ? " active fw-semibold text-light" : " text-light")
-            }
+            className="text-white nav-link fw-semibold fs-5"
           >
-            Preferiti ({favorites.length})
+            Preferiti
           </NavLink>
           <NavLink
-            to="/compare"
-            className={({ isActive }) =>
-              "nav-link px-2" +
-              (isActive ? " active fw-semibold text-light" : " text-light")
-            }
+            to="/smartphones"
+            className="text-white nav-link fw-semibold fs-5"
           >
-            Confronta ({compareList.length})
+            Smartphones
+          </NavLink>
+          <NavLink to="/about" className="text-white nav-link fw-semibold fs-5">
+            Chi siamo
           </NavLink>
         </nav>
       </div>
