@@ -5,6 +5,7 @@ import CategoryFilter from "./CategoryFilter";
 import SortControl from "./SortControl";
 import { useComparator } from "../contexts/ComparatorContext";
 import { useNavigate } from "react-router-dom";
+import { Toast } from "bootstrap"; // ✅ Import corretto di Toast
 
 const showToast = (message, type = "info") => {
   const toastContainer = document.getElementById("toastArea");
@@ -25,7 +26,7 @@ const showToast = (message, type = "info") => {
 
   toastContainer.appendChild(toastEl);
 
-  const bsToast = new bootstrap.Toast(toastEl, {
+  const bsToast = new Toast(toastEl, {
     animation: true,
     autohide: true,
     delay: 4000,

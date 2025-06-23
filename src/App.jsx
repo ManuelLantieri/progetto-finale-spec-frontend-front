@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
+import HomePage from "../pages/HomePage";
 import Footer from "./components/Footer";
 import PhoneList from "./components/PhoneList";
 import PhoneDetail from "./components/PhoneDetail";
@@ -15,10 +16,7 @@ export default function App() {
         style={{ fontFamily: "Helvetica, Arial, sans-serif" }}
       >
         <Routes>
-          <Route path="/" element={<PhoneList />} />
-          <Route path="/phones/:id" element={<PhoneDetail />} />
-          <Route path="/favorites" element={<Favorites />} />
-          <Route path="/compare" element={<Comparator />} />
+          <Route path="/" element={<HomePage />} />
         </Routes>
       </main>
       <Footer />
