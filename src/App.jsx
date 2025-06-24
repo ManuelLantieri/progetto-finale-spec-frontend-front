@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomePage from "../pages/HomePage";
 import ComparePhones from "../pages/ComparePhones";
-
+import Smartphones from "../pages/Smartphones";
 export default function App() {
   return (
     <BrowserRouter>
@@ -19,6 +19,7 @@ export default function App() {
         <div style={{ flex: 1, overflow: "hidden" }}>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/Smartphones" element={<Smartphones />} />
             <Route path="/compare" element={<ComparePhones />} />
           </Routes>
         </div>

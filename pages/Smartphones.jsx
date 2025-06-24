@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 import { fetchPhones } from "../src/api";
-import PhoneCard from "../components/PhoneCard";
+import PhoneCard from "../src/components/CompareCard";
 
 const bestPhonesImages = [
   "https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg",
