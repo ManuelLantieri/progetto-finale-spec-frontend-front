@@ -81,8 +81,9 @@ export default function CompareCollapse() {
               <button
                 className="btn btn-primary flex-fill"
                 onClick={() => {
+                  const ids = compareList.map((p) => p.id).join(",");
                   setIsOpen(false);
-                  navigate("/compare");
+                  navigate(`/compare?ids=${ids}`);
                 }}
               >
                 Confronta ({compareList.length})

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 import { fetchPhones } from "../src/api";
 import PhoneCard from "../src/components/Phonecard";
+import CompareCollapse from "../src/components/CompareCollapse";
 
 const bestPhonesImages = [
   "https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg",
@@ -63,6 +64,7 @@ export default function Smartphones() {
           </div>
         )}
       </div>
+      <CompareCollapse />
     </div>
   );
 }

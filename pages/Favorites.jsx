@@ -1,7 +1,7 @@
 import { useFavorites } from "../src/contexts/FavoritesContext";
 import { useNavigate } from "react-router-dom";
 import PhoneCard from "../src/components/Phonecard";
-import Footer from "../src/components/Footer";
+import CompareCollapse from "../src/components/CompareCollapse";
 
 export default function Favorites() {
   const { favorites } = useFavorites();
@@ -34,6 +34,7 @@ export default function Favorites() {
           </div>
         )}
       </main>
+      <CompareCollapse />
     </div>
   );
 }
