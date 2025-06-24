@@ -1,5 +1,4 @@
 import React from "react";
-import { getPhoneImagePath } from "../config";
 
 export default function CompareCard({ title, image, description }) {
   return (

@@ -1,4 +1,4 @@
-import { API_BASE } from "./config";
+const API_BASE = "http://localhost:3001";
 
 export async function fetchPhones({
   search = "",
