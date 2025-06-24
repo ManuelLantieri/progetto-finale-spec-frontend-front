@@ -1,5 +1,6 @@
 import React from "react";
 import { useFavorites } from "../contexts/FavoritesContext";
+import { useComparator } from "../contexts/ComparatorContext";
 
 export default function PhoneCard({
   id,
@@ -11,12 +12,21 @@ export default function PhoneCard({
   price,
 }) {
   const { favorites, addFav, removeFav } = useFavorites();
+  const { compareList, toggleCompare } = useComparator();
 
   const isFavorited = favorites.some((item) => item.id === id);
+  const isCompared = compareList.some((item) => item.id === id);
+  const maxReached = compareList.length >= 3 && !isCompared;
+  const phone = { id, title, image, category, origin, description, price };
 
   const handleFavoriteToggle = () => {
-    const phone = { id, title, image, category, origin, description, price };
     isFavorited ? removeFav(id) : addFav(phone);
+  };
+
+  const handleCompareToggle = () => {
+    if (!maxReached) {
+      toggleCompare(phone);
+    }
   };
 
   return (
@@ -44,12 +54,18 @@ export default function PhoneCard({
           >
             {isFavorited ? "✅ Salvato" : "💾"}
           </button>
+
           <button
-            className="btn btn-outline-success"
-            onClick={() => console.log("TODO: aggiungi a comparazione")}
-            title="Aggiungi alla comparazione"
+            className={`btn btn-outline-success ${isCompared ? "active" : ""}`}
+            onClick={handleCompareToggle}
+            title={
+              maxReached && !isCompared
+                ? "Hai già selezionato 3 dispositivi"
+                : "Aggiungi alla comparazione"
+            }
+            disabled={maxReached && !isCompared}
           >
-            ➕
+            {isCompared ? "✓ Selezionato" : "➕"}
           </button>
         </div>
       </div>

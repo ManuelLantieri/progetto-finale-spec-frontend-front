@@ -5,6 +5,7 @@ import HomePage from "../pages/HomePage";
 import ComparePhones from "../pages/ComparePhones";
 import Smartphones from "../pages/Smartphones";
 import Favorites from "../pages/Favorites";
+import CompareCollapse from "./components/CompareCollapse";
 
 export default function App() {
   return (
@@ -16,10 +17,10 @@ export default function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/Smartphones" element={<Smartphones />} />
             <Route path="/Favorites" element={<Favorites />} />
-
             <Route path="/compare" element={<ComparePhones />} />
           </Routes>
         </div>
+        <CompareCollapse />
         <Footer />
       </div>
     </BrowserRouter>

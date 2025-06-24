@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, clearCompare } from "react";
 
 const ComparatorContext = createContext();
 
