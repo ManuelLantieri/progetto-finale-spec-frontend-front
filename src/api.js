@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:3001";
+import { API_BASE } from "./config";
 
 export async function fetchPhones({
   search = "",
@@ -24,4 +24,11 @@ export async function fetchPhones({
   }
 
   return phones;
+}
+
+export async function fetchPhonesByIds(ids) {
+  const query = ids.map((id) => `id=${id}`).join("&");
+  const res = await fetch(`${API_BASE}/smartphones?${query}`);
+  if (!res.ok) throw new Error(`Errore nella fetch (by IDs): ${res.status}`);
+  return await res.json();
 }

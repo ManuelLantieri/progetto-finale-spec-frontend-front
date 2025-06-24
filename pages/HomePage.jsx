@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { fetchPhones } from "../src/api";
 
 export default function HomePage() {
@@ -6,8 +7,9 @@ export default function HomePage() {
   const [suggestions, setSuggestions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPhones, setSelectedPhones] = useState([]);
-
   const activeIndex = selectedPhones.length;
+  const searchBoxRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const query = queries[activeIndex];
@@ -20,11 +22,9 @@ export default function HomePage() {
       setIsLoading(true);
       try {
         const results = await fetchPhones({ search: query });
-
         const filtered = results.filter(
           (phone) => !selectedPhones.some((p) => p.id === phone.id)
         );
-
         const sorted = filtered.sort((a, b) => {
           const q = query.toLowerCase();
           const aTitle = a.title.toLowerCase();
@@ -35,7 +35,6 @@ export default function HomePage() {
           if (!aStarts && bStarts) return 1;
           return aTitle.localeCompare(bTitle);
         });
-
         setSuggestions(sorted);
       } catch (err) {
         console.error("Errore nella fetch:", err);
@@ -47,6 +46,20 @@ export default function HomePage() {
 
     return () => clearTimeout(delay);
   }, [queries, activeIndex, selectedPhones]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchBoxRef.current &&
+        !searchBoxRef.current.contains(event.target)
+      ) {
+        setSuggestions([]);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleInput = (index, value) => {
     setQueries((prev) => {
@@ -67,40 +80,20 @@ export default function HomePage() {
   const handleRemove = (index) => {
     const updatedPhones = [...selectedPhones];
     const updatedQueries = [...queries];
-
     updatedPhones.splice(index, 1);
     updatedQueries.splice(index, 1);
     updatedQueries.splice(index, 0, "");
-
     setSelectedPhones(updatedPhones);
     setQueries(updatedQueries);
   };
-
-  const searchBoxRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        searchBoxRef.current &&
-        !searchBoxRef.current.contains(event.target)
-      ) {
-        setSuggestions([]);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   return (
     <section
       className="d-flex flex-column align-items-center justify-content-center text-center px-3"
       style={{
-        minHeight: "100vh",
+        height: "100vh",
         background:
-          "linear-gradient(90deg,rgba(2, 0, 36, 1) 24%, rgba(9, 9, 121, 1) 51%, rgba(7, 55, 151, 1) 63%, rgba(2, 145, 211, 1) 90%, rgba(1, 176, 231, 1) 96%, rgba(0, 212, 255, 1) 100%",
+          "linear-gradient(90deg,rgba(2, 0, 36, 1) 24%, rgba(9, 9, 121, 1) 51%, rgba(7, 55, 151, 1) 63%, rgba(2, 145, 211, 1) 90%, rgba(1, 176, 231, 1) 96%, rgba(0, 212, 255, 1) 100%)",
         color: "#fff",
         position: "relative",
         overflow: "hidden",
@@ -143,7 +136,7 @@ export default function HomePage() {
               onChange={(e) => handleInput(activeIndex, e.target.value)}
             />
 
-            {queries[activeIndex]?.trim() && (
+            {queries[activeIndex]?.trim() && suggestions !== null && (
               <div
                 className="position-absolute bg-white border rounded shadow-sm"
                 style={{
@@ -162,7 +155,7 @@ export default function HomePage() {
                   suggestions.map((item) => (
                     <div
                       key={item.id}
-                      className="p-3 border-bottom hover-bg-light"
+                      className="p-3 border-bottom"
                       style={{ cursor: "pointer" }}
                       onClick={() => handleSelect(item)}
                     >
@@ -184,7 +177,7 @@ export default function HomePage() {
             className="btn btn-primary btn-lg px-5"
             onClick={() => {
               const ids = selectedPhones.map((p) => p.id).join(",");
-              window.location.href = `/compare?ids=${ids}`;
+              navigate(`/compare?ids=${ids}`);
             }}
           >
             Confronta {selectedPhones.length} dispositivi
