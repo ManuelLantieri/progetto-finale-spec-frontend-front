@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 import { fetchPhones } from "../src/api";
-import PhoneCard from "../src/components/CompareCard";
+import PhoneCard from "../src/components/Phonecard";
 
 const bestPhonesImages = [
   "https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg",
@@ -23,7 +23,7 @@ export default function Smartphones() {
   }, []);
 
   return (
-    <div className="pt-5">
+    <div className="pt-5 mb-5">
       <div className="container my-5">
         <h2 className="text-center mb-4">I migliori smartphone</h2>
         <Carousel>
@@ -50,6 +50,7 @@ export default function Smartphones() {
             {phones.map((phone) => (
               <div key={phone.id} className="col-md-4">
                 <PhoneCard
+                  id={phone.id}
                   title={phone.title}
                   category={phone.category}
                   origin={phone.origin}

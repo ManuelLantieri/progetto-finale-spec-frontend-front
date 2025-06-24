@@ -1,5 +1,9 @@
 import React from "react";
 
+function getPhoneImagePath(filename) {
+  return `/images/phones/${filename}`;
+}
+
 export default function CompareCard({ title, image, description }) {
   return (
     <div

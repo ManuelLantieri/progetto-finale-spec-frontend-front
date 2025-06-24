@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
+import { useFavorites } from "../contexts/FavoritesContext";
 
 export default function PhoneCard({
+  id,
   title,
   image,
   category,
@@ -8,8 +10,14 @@ export default function PhoneCard({
   description,
   price,
 }) {
-  const [favorited, setFavorited] = useState(false);
-  const [compared, setCompared] = useState(false);
+  const { favorites, addFav, removeFav } = useFavorites();
+
+  const isFavorited = favorites.some((item) => item.id === id);
+
+  const handleFavoriteToggle = () => {
+    const phone = { id, title, image, category, origin, description, price };
+    isFavorited ? removeFav(id) : addFav(phone);
+  };
 
   return (
     <div className="card shadow-sm h-100">
@@ -30,19 +38,18 @@ export default function PhoneCard({
 
         <div className="btn-group justify-content-center mt-auto" role="group">
           <button
-            className={`btn btn-outline-primary ${favorited ? "active" : ""}`}
-            onClick={() => setFavorited(!favorited)}
+            className={`btn btn-outline-primary ${isFavorited ? "active" : ""}`}
+            onClick={handleFavoriteToggle}
             title="Aggiungi ai preferiti"
           >
-            {favorited ? "Preferito" : "💾"}
+            {isFavorited ? "✅ Salvato" : "💾"}
           </button>
-
           <button
-            className={`btn btn-outline-success ${compared ? "active" : ""}`}
-            onClick={() => setCompared(!compared)}
+            className="btn btn-outline-success"
+            onClick={() => console.log("TODO: aggiungi a comparazione")}
             title="Aggiungi alla comparazione"
           >
-            {compared ? "✓" : "➕"}
+            ➕
           </button>
         </div>
       </div>
