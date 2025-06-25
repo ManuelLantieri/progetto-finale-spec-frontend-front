@@ -5,7 +5,6 @@ import CompareCollapse from "../src/components/CompareCollapse";
 import { fetchPhones } from "../src/api";
 import CarouselSlideCard from "../src/components/CarouselSlideCard";
 
-// Funzione per mescolare un array (shuffle)
 function shuffleArray(array) {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -21,13 +20,15 @@ export default function Smartphones() {
   const [loading, setLoading] = useState(true);
   const phoneRefs = useRef({});
   const [highlightedId, setHighlightedId] = useState(null);
+  const [sortOrder, setSortOrder] = useState(null);
+  const [selectedBrand, setSelectedBrand] = useState(null);
 
   useEffect(() => {
     fetchPhones()
       .then((data) => {
-        setPhones(data); // griglia rimane stabile
+        setPhones(data);
         const shuffled = shuffleArray([...data]);
-        setCarouselPhones(shuffled.slice(0, 5)); // carosello = casuale
+        setCarouselPhones(shuffled.slice(0, 5));
       })
       .catch((err) => {
         console.error("Errore nella fetch:", err);
@@ -44,6 +45,37 @@ export default function Smartphones() {
       setHighlightedId(id);
       setTimeout(() => setHighlightedId(null), 2000);
     }
+  };
+
+  const getVisiblePhones = () => {
+    let filtered = [...phones];
+
+    if (selectedBrand) {
+      filtered = filtered.filter((p) => p.smartphone?.brand === selectedBrand);
+    }
+
+    switch (sortOrder) {
+      case "price-asc":
+        filtered.sort((a, b) => a.smartphone?.price - b.smartphone?.price);
+        break;
+      case "price-desc":
+        filtered.sort((a, b) => b.smartphone?.price - a.smartphone?.price);
+        break;
+      case "name-asc":
+        filtered.sort((a, b) =>
+          a.smartphone?.title?.localeCompare(b.smartphone?.title)
+        );
+        break;
+      case "name-desc":
+        filtered.sort((a, b) =>
+          b.smartphone?.title?.localeCompare(a.smartphone?.title)
+        );
+        break;
+      default:
+        break;
+    }
+
+    return filtered;
   };
 
   return (
@@ -72,11 +104,106 @@ export default function Smartphones() {
       <div className="container">
         <h3 className="my-4">Tutti i dispositivi</h3>
 
+        <div className="d-flex flex-wrap gap-3 mb-4">
+          <div className="dropdown">
+            <button
+              className="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+            >
+              Prezzo
+            </button>
+            <ul className="dropdown-menu">
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => setSortOrder("price-asc")}
+                >
+                  Prezzo crescente
+                </button>
+              </li>
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => setSortOrder("price-desc")}
+                >
+                  Prezzo decrescente
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div className="dropdown">
+            <button
+              className="btn btn-outline-secondary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+            >
+              Nome
+            </button>
+            <ul className="dropdown-menu">
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => setSortOrder("name-asc")}
+                >
+                  A → Z
+                </button>
+              </li>
+              <li>
+                <button
+                  className="dropdown-item"
+                  onClick={() => setSortOrder("name-desc")}
+                >
+                  Z → A
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <div className="dropdown">
+            <button
+              className="btn btn-outline-primary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+            >
+              Brand {selectedBrand ? `: ${selectedBrand}` : ""}
+            </button>
+            <ul className="dropdown-menu">
+              {["Apple", "Samsung", "Xiaomi"].map((brand) => (
+                <li key={brand}>
+                  <button
+                    className={`dropdown-item ${
+                      selectedBrand === brand ? "active" : ""
+                    }`}
+                    onClick={() =>
+                      setSelectedBrand((prev) =>
+                        prev === brand ? null : brand
+                      )
+                    }
+                  >
+                    {brand}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <button
+            className="btn btn-outline-danger ms-auto"
+            onClick={() => {
+              setSortOrder(null);
+              setSelectedBrand(null);
+            }}
+          >
+            Ripristina filtri
+          </button>
+        </div>
+
         {loading ? (
           <p className="text-center py-5">Caricamento...</p>
         ) : phones.length > 0 ? (
           <div className="row g-4">
-            {phones.map((phone, index) => {
+            {getVisiblePhones().map((phone, index) => {
               const id = phone.smartphone?.id;
               if (!id) return null;
               phoneRefs.current[id] =
