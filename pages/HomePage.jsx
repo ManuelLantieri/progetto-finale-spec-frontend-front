@@ -22,9 +22,13 @@ export default function HomePage() {
       setIsLoading(true);
       try {
         const results = await fetchPhones({ search: query });
-        const filtered = results.filter(
+
+        const phones = results.map((r) => r.smartphone); // ✅ estrai oggetti reali
+
+        const filtered = phones.filter(
           (phone) => !selectedPhones.some((p) => p.id === phone.id)
         );
+
         const sorted = filtered.sort((a, b) => {
           const q = query.toLowerCase();
           const aTitle = a.title.toLowerCase();
@@ -35,6 +39,7 @@ export default function HomePage() {
           if (!aStarts && bStarts) return 1;
           return aTitle.localeCompare(bTitle);
         });
+
         setSuggestions(sorted);
       } catch (err) {
         console.error("Errore nella fetch:", err);

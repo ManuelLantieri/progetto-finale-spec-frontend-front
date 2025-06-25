@@ -14,7 +14,7 @@ export default function ComparePhones() {
     if (ids.length >= 2) {
       fetchPhonesByIds(ids).then((data) => {
         const ordered = ids
-          .map((id) => data.find((p) => p.id.toString() === id))
+          .map((id) => data.find((p) => p.smartphone?.id.toString() === id))
           .filter(Boolean);
         setPhones(ordered);
       });
@@ -53,20 +53,14 @@ export default function ComparePhones() {
         >
           {phones.map((phone) => (
             <div
-              key={phone.id}
+              key={phone.smartphone.id}
               className="flex-shrink-0"
               style={{
                 width: "300px",
                 scrollSnapAlign: "start",
               }}
             >
-              <CompareCard
-                title={phone.title}
-                image={phone.image}
-                description={
-                  phone.description || "Nessuna descrizione disponibile."
-                }
-              />
+              <CompareCard {...phone.smartphone} />
             </div>
           ))}
         </div>

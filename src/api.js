@@ -13,22 +13,29 @@ export async function fetchPhones({
   const res = await fetch(`${API_BASE}/smartphones?${params.toString()}`);
   if (!res.ok) throw new Error(`Errore nella fetch: ${res.status}`);
 
-  let phones = await res.json();
+  const basicPhones = await res.json();
+
+  const fullPhones = await Promise.all(
+    basicPhones.map((item) =>
+      fetch(`${API_BASE}/smartphones/${item.id}`).then((res) => res.json())
+    )
+  );
 
   if (sortBy) {
-    phones.sort((a, b) => {
+    fullPhones.sort((a, b) => {
       const A = a[sortBy]?.toString().toLowerCase() || "";
       const B = b[sortBy]?.toString().toLowerCase() || "";
       return order === "asc" ? A.localeCompare(B) : B.localeCompare(A);
     });
   }
 
-  return phones;
+  return fullPhones;
 }
 
 export async function fetchPhonesByIds(ids) {
-  const query = ids.map((id) => `id=${id}`).join("&");
-  const res = await fetch(`${API_BASE}/smartphones?${query}`);
-  if (!res.ok) throw new Error(`Errore nella fetch (by IDs): ${res.status}`);
-  return await res.json();
+  return await Promise.all(
+    ids.map((id) =>
+      fetch(`${API_BASE}/smartphones/${id}`).then((res) => res.json())
+    )
+  );
 }

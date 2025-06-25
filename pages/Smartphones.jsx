@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
-import { fetchPhones } from "../src/api";
 import PhoneCard from "../src/components/Phonecard";
 import CompareCollapse from "../src/components/CompareCollapse";
+import { fetchPhones } from "../src/api";
 
 const bestPhonesImages = [
   "https://fdn2.gsmarena.com/vv/pics/apple/apple-iphone-15-pro-1.jpg",
@@ -17,10 +17,19 @@ export default function Smartphones() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("Chiamata fetchPhones() da API...");
+
     fetchPhones()
-      .then((data) => setPhones(data))
-      .catch(console.error)
-      .finally(() => setLoading(false));
+      .then((data) => {
+        console.log("Dati completi:", data);
+        setPhones(data);
+      })
+      .catch((err) => {
+        console.error("Errore nella fetch:", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -28,12 +37,12 @@ export default function Smartphones() {
       <div className="container my-5">
         <h2 className="text-center mb-4">I migliori smartphone</h2>
         <Carousel>
-          {bestPhonesImages.map((url, index) => (
-            <Carousel.Item key={index}>
+          {bestPhonesImages.map((url) => (
+            <Carousel.Item key={`carousel-${url}`}>
               <img
                 className="d-block w-100"
                 src={url}
-                alt={`Best phone ${index + 1}`}
+                alt="Best phone"
                 style={{ maxHeight: "500px", objectFit: "cover" }}
               />
             </Carousel.Item>
@@ -46,24 +55,22 @@ export default function Smartphones() {
 
         {loading ? (
           <p className="text-center py-5">Caricamento...</p>
-        ) : (
+        ) : phones.length > 0 ? (
           <div className="row g-4">
-            {phones.map((phone) => (
-              <div key={phone.id} className="col-md-4">
-                <PhoneCard
-                  id={phone.id}
-                  title={phone.title}
-                  category={phone.category}
-                  origin={phone.origin}
-                  description={phone.description}
-                  price={phone.price}
-                  image={phone.image}
-                />
+            {phones.map((phone, index) => (
+              <div
+                key={phone.smartphone?.id || `phone-${index}`}
+                className="col-md-4"
+              >
+                <PhoneCard {...phone.smartphone} />
               </div>
             ))}
           </div>
+        ) : (
+          <p className="text-center py-5">Nessun dispositivo trovato.</p>
         )}
       </div>
+
       <CompareCollapse />
     </div>
   );
