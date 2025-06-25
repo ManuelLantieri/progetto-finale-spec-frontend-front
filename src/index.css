@@ -1,0 +1,33 @@
+.carousel-control-prev,
+.carousel-control-next {
+  opacity: 1;
+  z-index: 2;
+}
+
+/* Icone grandi, visibili, con sfondo scuro */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  background-size: 60% 60%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.highlighted {
+  animation: pulse-border 1.2s ease-out;
+}
+
+@keyframes pulse-border {
+  0% {
+    box-shadow: 0 0 0px 0 rgba(0, 123, 255, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 16px 6px rgba(0, 123, 255, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0px 0 rgba(0, 123, 255, 0);
+  }
+}

@@ -36,8 +36,6 @@ export default function PhoneCard(props) {
     if (!maxReached) toggleCompare(phone);
   };
 
-  console.log("📸 Rendering", id, title, "→", image);
-
   return (
     <div className="card shadow-sm h-100">
       <img
