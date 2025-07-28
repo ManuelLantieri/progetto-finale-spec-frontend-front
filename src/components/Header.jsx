@@ -38,6 +38,7 @@ export default function Header() {
           >
             Smartphones
           </NavLink>
+
           <NavLink to="/about" className="nav-link fw-semibold fs-5 text-white">
             Chi siamo
           </NavLink>

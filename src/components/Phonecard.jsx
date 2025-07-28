@@ -1,6 +1,7 @@
 import React from "react";
 import { useFavorites } from "../contexts/FavoritesContext";
 import { useComparator } from "../contexts/ComparatorContext";
+import { useNavigate } from "react-router-dom";
 
 export default function PhoneCard(props) {
   const {
@@ -21,6 +22,7 @@ export default function PhoneCard(props) {
 
   const { favorites, addFav, removeFav } = useFavorites();
   const { compareList, toggleCompare } = useComparator();
+  const navigate = useNavigate();
 
   const isFavorited = favorites.some((item) => item.id === id);
   const isCompared = compareList.some((item) => item.id === id);
@@ -36,6 +38,10 @@ export default function PhoneCard(props) {
     if (!maxReached) toggleCompare(phone);
   };
 
+  const goToDetail = () => {
+    navigate("/smartphones/:id", { state: phone });
+  };
+
   return (
     <div className="card shadow-sm h-100">
       <img
@@ -43,7 +49,9 @@ export default function PhoneCard(props) {
         alt={title || "Smartphone"}
         className="card-img-top img-fluid p-3"
         loading="lazy"
+        onClick={goToDetail}
         style={{
+          cursor: "pointer",
           objectFit: "contain",
           maxHeight: "250px",
           minHeight: "150px",
@@ -56,7 +64,14 @@ export default function PhoneCard(props) {
       />
 
       <div className="card-body text-center d-flex flex-column">
-        <h5 className="card-title fw-bold">{title}</h5>
+        <h5
+          className="card-title fw-bold"
+          onClick={goToDetail}
+          style={{ cursor: "pointer" }}
+        >
+          {title}
+        </h5>
+
         <p className="card-text text-muted small">
           {category || "Sconosciuto"} · {origin || "N/A"}
         </p>

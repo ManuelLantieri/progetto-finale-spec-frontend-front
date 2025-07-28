@@ -23,7 +23,7 @@ export default function HomePage() {
       try {
         const results = await fetchPhones({ search: query });
 
-        const phones = results.map((r) => r.smartphone); // ✅ estrai oggetti reali
+        const phones = results.map((r) => r.smartphone);
 
         const filtered = phones.filter(
           (phone) => !selectedPhones.some((p) => p.id === phone.id)
